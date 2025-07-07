@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  flask_app:
+    build: .
+    container_name: flask_app
+    ports:
+      - "5000:5000"
+    volumes:
+      - gluster_mount:/mnt/glusterfs
+    depends_on:
+      - gluster_node1
+      - gluster_node2
+    networks:
+      - gluster_net
+
+  gluster_node1:
+    image: gluster/gluster-centos
+    container_name: gluster_node1
+    privileged: true
+    hostname: gluster1
+    volumes:
+      - gluster1_data:/data
+    networks:
+      - gluster_net
+
+  gluster_node2:
+    image: gluster/gluster-centos
+    container_name: gluster_node2
+    privileged: true
+    hostname: gluster2
+    volumes:
+      - gluster2_data:/data
+    networks:
+      - gluster_net
+
+volumes:
+  gluster1_data:
+  gluster2_data:
+  gluster_mount:
+
+networks:
+  gluster_net:

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Gerenciador de Arquivos</title>
+</head>
+<body>
+    <h1>Arquivos</h1>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('main.upload') }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" />
+        <button type="submit">Enviar</button>
+    </form>
+
+    <ul>
+        {% for file in files %}
+        <li>
+            {{ file }}
+            <form action="{{ url_for('main.delete', filename=file) }}" method="post" style="display:inline">
+                <button type="submit">Excluir</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
